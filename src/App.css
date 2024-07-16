@@ -5,23 +5,27 @@ body {
   background-position: center;
   margin: 0;
   padding: 0;
+  height: 100hv;
 }
 
 .app-container {
   background: #fff;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: auto;
 }
 
 .card-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 70vh;
-  gap: 40px;
+  height: 100%;
+  padding: 50px;
+  gap: 20px;
 }
 
 .card {
@@ -48,12 +52,14 @@ body {
 .content {
   flex: 1;
   margin-top: 10px;
+  max-width: 330px;
   padding-inline: 35px;
 }
 
 .image {
   flex: 1;
   width: 100%;
+  min-width: 290px;
   max-width: 380px;
   aspect-ratio: 1 / 1;
   overflow: hidden;
@@ -136,10 +142,15 @@ a:hover {
   background-color: #ffffff;
   padding: 8px 15px;
   border-radius: 6px;
+  align-items: flex-start;
 }
 
 .gap-3 {
   gap: 15px;
+}
+
+.mx-0 {
+  margin-inline: 0px !important;
 }
 
 .search-container {
@@ -148,7 +159,7 @@ a:hover {
   gap: 20px;
   justify-content: flex-start;
   align-items: center;
-  height: 20vh;
+  /* height: 20vh; */
 }
 
 input {
@@ -165,4 +176,11 @@ button {
   background-color: rgba(24, 246, 50, 0.815);
   font-weight: 500;
   border: none;
+}
+
+@media (max-width: 700px) {
+  .card-container {
+    flex-direction: column;
+    gap: 20px;
+  }
 }

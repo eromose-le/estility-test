@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import Link from "./components/Link";
 
 interface Country {
   name: { common: string; official: string };
@@ -32,7 +33,7 @@ function formatPopulation(number: number): string {
   } else if (number >= 1_000) {
     return (number / 1_000).toFixed(2) + "k";
   } else {
-    return number.toString();
+    return number?.toString() || "";
   }
 }
 
@@ -106,10 +107,23 @@ function App() {
       details: [
         { icon: "📍", value: country?.capital },
         { icon: "🕒", value: formatLatLng(country?.latlng) },
-        { icon: "ℹ️", value: country?.startOfWeek?.toUpperCase() },
-        { icon: "🕒", value: "No definitions available." },
+        {
+          icon: "ℹ️",
+          value: country?.startOfWeek?.toUpperCase(),
+          className: "monday",
+        },
+        {
+          icon: "🕒",
+          value: "🕒  No definitions available.",
+          className: "defination",
+        },
         { icon: "🕒", value: country?.region },
-        { icon: "🕒", value: country?.maps?.googleMaps },
+        {
+          icon: "🕒",
+          value: country?.maps?.googleMaps,
+          title: "Map Link",
+          type: "component",
+        },
       ],
     },
   ];
@@ -118,108 +132,86 @@ function App() {
     <>
       <div className="app-container">
         <div className="card-container">
-          <div className="card">
-            <div className="image">
-              <img
-                src={country?.flags?.svg}
-                alt={`${country?.name?.common} "Flag"`}
-              />
-            </div>
-            <div className="content">
-              <div className="divider"></div>
-              <h1>{country?.name?.official}</h1>
-              <div className="details">
-                <p>{country?.region}</p>
-                <div className="info">
-                  <span role="img" aria-label="People">
-                    👥
-                  </span>
-                  <p className="center-info">
-                    {formatPopulation(country?.population)} People
-                  </p>
-                </div>
-                <div className="info">
-                  <span role="img" aria-label="Language">
-                    📢
-                  </span>
-                  <p className="center-info">
-                    {Object.values(country?.languages).join(", ") ||
-                      "more language"}
-                  </p>
-                </div>
-                <div className="info">
-                  <span role="img" aria-label="Currency">
-                    💵
-                  </span>
-                  <p className="center-info">
-                    {formatCurrencies(country?.currencies)}
-                  </p>
-                </div>
+          {countryDetails.map((country: any, index) => {
+            return (
+              <div>
+                {index === 0 && (
+                  <div key={country[0]?.name} className="card">
+                    <div className="image">
+                      <img
+                        src={country?.image}
+                        alt={`${country?.alt} "Flag"`}
+                      />
+                    </div>
+                    <div className="content">
+                      <div className="divider"></div>
+                      <h1>{country?.name}</h1>
+                      <div className="details">
+                        <p className="mx-0">{country?.region}</p>
+                        {country?.details?.map((details: any) => (
+                          <div key={details?.value}>
+                            <div className="info">
+                              <span role="img" aria-label="People">
+                                {details?.icon}
+                              </span>
+                              <p className="center-info">{details?.value}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
+            );
+          })}
 
-          <div className="card">
-            <div className="image image-fit">
-              <img
-                src={country?.coatOfArms?.svg}
-                alt={`${country?.name?.common} "Coat of Arms"`}
-              />
-            </div>
-            <div className="content">
-              <div className="details">
-                <div className="info gap-3">
-                  <span role="img" aria-label="Coordinates">
-                    📍
-                  </span>
-                  <p>{country?.capital}</p>
-                </div>
-
-                <div className="info gap-3">
-                  <span role="img" aria-label="Coordinates">
-                    📍
-                  </span>
-                  <p>{formatLatLng(country?.latlng)}</p>
-                </div>
-
-                <div className="info gap-3">
-                  <span role="img" aria-label="Day">
-                    🕒
-                  </span>
-                  <p className="monday">
-                    {country?.startOfWeek?.toUpperCase()}
-                  </p>
-                </div>
-
-                <div className="info gap-3">
-                  <span role="img" aria-label="Info">
-                    ℹ️
-                  </span>
-                  <p className="defination">📍 No definitions available.</p>
-                </div>
-
-                <div className="info gap-3">
-                  <span role="img" aria-label="region">
-                    ℹ️
-                  </span>
-                  <p>{country?.region}</p>
-                </div>
-
-                <div className="info gap-3">
-                  <span role="img" aria-label="region">
-                    ℹ️
-                  </span>
-                  <a
-                    href={country?.maps?.googleMaps}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Map Link
-                  </a>
-                </div>
+          {countryDetails?.map((country: any, index) => {
+            return (
+              <div key={country[1]?.name}>
+                {index === 1 && (
+                  <div className="card">
+                    <div className="image image-fit">
+                      <img
+                        src={country?.image}
+                        alt={`${country?.alt} "Coat of Arms"`}
+                      />
+                    </div>
+                    <div className="content">
+                      <div className="details">
+                        {country?.details?.map((details: any) => {
+                          return (
+                            <div key={details?.value}>
+                              {details?.type === "component" ? (
+                                <div className="info gap-3">
+                                  <span role="img" aria-label="region">
+                                    ℹ️
+                                  </span>
+                                  <Link
+                                    href={details.value}
+                                    title={details?.title}
+                                  />
+                                </div>
+                              ) : (
+                                <div className="info gap-3">
+                                  <span role="img" aria-label="Coordinates">
+                                    {details?.icon}
+                                  </span>
+                                  <p className={`${details?.className || ""}`}>
+                                    {details?.value}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
 
         <div className="search-container">
