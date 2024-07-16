@@ -9,7 +9,7 @@ body {
 }
 
 .app-container {
-  background: #fff;
+  background: #f1f1f3;
   height: 100%;
   width: 100vw;
   display: flex;
@@ -131,7 +131,7 @@ p {
 
 a {
   display: inline-block;
-  color: #321cb0;
+  color: #001583;
   text-decoration: underline;
   padding-inline: 15px;
 }
@@ -144,8 +144,8 @@ a:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
   text-decoration-thickness: 5px;
-  text-decoration-color: rgb(111, 171, 236);
-  background-color: #c0c0c0;
+  text-decoration-color: #538bba;
+  background-color: #c0c2c1;
 }
 
 .definition {
@@ -186,7 +186,9 @@ a:hover {
 input {
   padding: 15px 10px;
   border-radius: 10px;
-  background-color: white;
+  background-color: #bfbfc7;
+  color: #000;
+  border: none;
   opacity: 0.5;
 }
 
@@ -194,7 +196,7 @@ button {
   padding: 15px;
   border-radius: 18px;
   color: #000;
-  background-color: rgba(24, 246, 50, 0.815);
+  background-color: #0de41c;
   font-weight: 500;
   border: none;
   cursor: pointer;
