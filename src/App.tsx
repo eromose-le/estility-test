@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import Link from "./components/Link";
 
@@ -27,14 +27,6 @@ type Currencies = {
   [key: string]: Currency;
 };
 
-interface Detail {
-  icon: string;
-  value: string | string[];
-  className?: string;
-  title?: string;
-  type?: "component";
-}
-
 function formatPopulation(number: number): string {
   if (number >= 1_000_000) {
     return (number / 1_000_000).toFixed(2) + "m";
@@ -55,33 +47,37 @@ function formatLatLng(latlng: number[]): string {
   const [latitude, longitude] = latlng;
   return (
     `${latitude.toFixed(2)} latitude, ${longitude.toFixed(2)} longitude` ||
-    "Nill"
+    "N/A"
   );
 }
+
+const BASE_URL = "https://restcountries.com/v3.1/name/";
 
 function App() {
   const [countryName, setCountryName] = useState<string>("Nigeria");
   const [country, setCountry] = useState<Country | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const fetchCountryData = async (name: string) => {
     try {
-      const response = await fetch(
-        `https://restcountries.com/v3.1/name/${name}`
-      );
+      setIsLoading(true);
+      const response = await fetch(`${BASE_URL}${name}`);
       const data: Country[] = await response.json();
       setCountry(data[0] || null);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     fetchCountryData(countryName);
-  }, [countryName]);
+  }, []);
 
-  if (!country) {
-    <div>Loading...</div>;
-  }
+  const ErrorMessage: JSX.Element = <div className="error">No Data found</div>;
 
   const countryDetails = [
     {
@@ -147,6 +143,11 @@ function App() {
     },
   ];
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    fetchCountryData(countryName);
+  };
+
   return (
     <div className="app-container">
       <div className="card-container">
@@ -191,17 +192,20 @@ function App() {
         ))}
       </div>
 
-      <div className="search-container">
-        <input
-          type="text"
-          value={countryName}
-          onChange={(e) => setCountryName(e.target.value)}
-          placeholder="Enter country name"
-        />
-        <button onClick={() => fetchCountryData(countryName)}>
-          Get Details
-        </button>
-      </div>
+      <>
+        <form className="search-container" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={countryName}
+            onChange={(e) => setCountryName(e.target.value)}
+            placeholder="Enter country name"
+          />
+          <button type="submit">
+            {isLoading ? "fetching.." : "Get Details"}
+          </button>
+          {(isError || !country) && ErrorMessage}
+        </form>
+      </>
     </div>
   );
 }

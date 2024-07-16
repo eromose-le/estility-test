@@ -126,7 +126,7 @@ p {
 
 .region {
   display: flex;
-align-items: flex-start;
+  align-items: flex-start;
 }
 
 a {
@@ -166,7 +166,7 @@ a:hover {
 .px-4 {
   background: #eee;
   display: flex;
-  padding-left: 15px
+  padding-left: 15px;
 }
 
 .search-container {
@@ -192,6 +192,10 @@ button {
   background-color: rgba(24, 246, 50, 0.815);
   font-weight: 500;
   border: none;
+}
+
+.error {
+  color: rgb(234, 43, 43);
 }
 
 @media (max-width: 700px) {
