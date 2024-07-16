@@ -27,100 +27,119 @@ type Currencies = {
   [key: string]: Currency;
 };
 
+interface Detail {
+  icon: string;
+  value: string | string[];
+  className?: string;
+  title?: string;
+  type?: "component";
+}
+
 function formatPopulation(number: number): string {
   if (number >= 1_000_000) {
     return (number / 1_000_000).toFixed(2) + "m";
   } else if (number >= 1_000) {
     return (number / 1_000).toFixed(2) + "k";
   } else {
-    return number?.toString() || "";
+    return number.toString() || "";
   }
 }
 
 function formatCurrencies(currencies: Currencies): string[] {
-  const formattedCurrencies: string[] = [];
-
-  for (const key in currencies) {
-    if (currencies.hasOwnProperty(key)) {
-      const currency = currencies[key];
-      formattedCurrencies.push(`${key}, ${currency.symbol}`);
-    }
-  }
-
-  return formattedCurrencies;
+  return Object.keys(currencies).map(
+    (key) => `${key}, ${currencies[key].symbol}`
+  );
 }
 
 function formatLatLng(latlng: number[]): string {
   const [latitude, longitude] = latlng;
-  return `${latitude.toFixed(2)} latitude, ${longitude.toFixed(2)} longitude`;
+  return (
+    `${latitude.toFixed(2)} latitude, ${longitude.toFixed(2)} longitude` ||
+    "Nill"
+  );
 }
 
 function App() {
   const [countryName, setCountryName] = useState<string>("Nigeria");
   const [country, setCountry] = useState<Country | null>(null);
 
-  const fetchCountryData = (name: string) => {
-    fetch(`https://restcountries.com/v3.1/name/${name}`)
-      .then((response) => response.json())
-      .then((data: Country[]) => {
-        const countryData = data[0];
-        setCountry(countryData || null);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  };
-
-  const handleSearch = () => {
-    fetchCountryData(countryName);
+  const fetchCountryData = async (name: string) => {
+    try {
+      const response = await fetch(
+        `https://restcountries.com/v3.1/name/${name}`
+      );
+      const data: Country[] = await response.json();
+      setCountry(data[0] || null);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
-    fetchCountryData("Nigeria");
-  }, []);
+    fetchCountryData(countryName);
+  }, [countryName]);
 
   if (!country) {
-    return <div>Loading...</div>;
+    <div>Loading...</div>;
   }
 
   const countryDetails = [
     {
-      name: country?.name?.official,
-      region: country?.region,
-      image: country?.flags?.svg,
-      alt: country?.name?.common,
+      name: country?.name?.official || "N/A",
+      region: country?.region || "N/A",
+      image: country?.flags?.svg || "N/A",
+      alt: country?.name?.common || "N/A",
       details: [
         {
           icon: "👥",
-          value: `${formatPopulation(country?.population)} People `,
+          value: `${formatPopulation(country?.population || 0)} People`,
+          infoClassName: "info-left",
         },
         {
           icon: "📢",
-          value: `${Object.values(country?.languages).join(", ") || "Nill"} `,
+          value: `${
+            Object.values(country?.languages || {}).join(", ") || "N/A"
+          }`,
+          infoClassName: "info-left",
         },
-        { icon: "💵", value: formatCurrencies(country?.currencies) },
+        {
+          icon: "💵",
+          value: formatCurrencies(country?.currencies || {}) ?? "N/A",
+          infoClassName: "info-left",
+        },
       ],
     },
     {
-      name: country?.name?.official,
-      region: country?.region,
-      image: country?.coatOfArms?.svg,
-      alt: country?.name?.common,
+      name: country?.name.official || "N/A",
+      region: country?.region || "N/A",
+      image: country?.coatOfArms.svg || "N/A",
+      alt: country?.name.common || "N/A",
       details: [
-        { icon: "📍", value: country?.capital },
-        { icon: "🕒", value: formatLatLng(country?.latlng) },
+        {
+          icon: "📍",
+          value: country?.capital.join(", ") || "N/A",
+          className: "px-4",
+        },
+        {
+          icon: "🕒",
+          value: formatLatLng(country?.latlng || [0, 0]) || "N/A",
+          className: "px-4",
+        },
         {
           icon: "ℹ️",
-          value: country?.startOfWeek?.toUpperCase(),
-          className: "monday",
+          value: country?.startOfWeek.toUpperCase() || "N/A",
+          className: "monday px-4",
         },
         {
           icon: "🕒",
           value: "🕒  No definitions available.",
-          className: "defination",
+          className: "definition",
         },
-        { icon: "🕒", value: country?.region },
+        { icon: "🕒", value: country?.region || "N/A", className: "px-4" },
         {
           icon: "🕒",
-          value: country?.maps?.googleMaps,
+          value: country?.maps?.googleMaps || "N/A",
+          className: "px-4",
           title: "Map Link",
           type: "component",
         },
@@ -129,102 +148,61 @@ function App() {
   ];
 
   return (
-    <>
-      <div className="app-container">
-        <div className="card-container">
-          {countryDetails.map((country: any, index) => {
-            return (
-              <div>
-                {index === 0 && (
-                  <div key={country[0]?.name} className="card">
-                    <div className="image">
-                      <img
-                        src={country?.image}
-                        alt={`${country?.alt} "Flag"`}
-                      />
-                    </div>
-                    <div className="content">
-                      <div className="divider"></div>
-                      <h1>{country?.name}</h1>
-                      <div className="details">
-                        <p className="mx-0">{country?.region}</p>
-                        {country?.details?.map((details: any) => (
-                          <div key={details?.value}>
-                            <div className="info">
-                              <span role="img" aria-label="People">
-                                {details?.icon}
-                              </span>
-                              <p className="center-info">{details?.value}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+    <div className="app-container">
+      <div className="card-container">
+        {countryDetails?.map((country, index) => (
+          <div key={index} className="card">
+            <div className={`image ${index === 1 ? "image-fit" : ""}`}>
+              <img
+                src={country.image}
+                alt={`${country.alt} ${index === 0 ? "Flag" : "Coat of Arms"}`}
+              />
+            </div>
+            <div className="content">
+              {index === 0 ? (
+                <div>
+                  <h1>{country.name}</h1>
+                  <p className="region">{country.region}</p>
+                </div>
+              ) : null}
 
-          {countryDetails?.map((country: any, index) => {
-            return (
-              <div key={country[1]?.name}>
-                {index === 1 && (
-                  <div className="card">
-                    <div className="image image-fit">
-                      <img
-                        src={country?.image}
-                        alt={`${country?.alt} "Coat of Arms"`}
+              <div className="details">
+                {country.details.map((detail: any, detailIndex) => (
+                  <div
+                    key={detailIndex}
+                    className={`${detail?.infoClassName} info`}
+                  >
+                    <span role="img" aria-label={detail.icon}>
+                      {detail.icon}
+                    </span>
+                    {detail.type === "component" ? (
+                      <Link
+                        href={detail.value as string}
+                        title={detail.title}
                       />
-                    </div>
-                    <div className="content">
-                      <div className="details">
-                        {country?.details?.map((details: any) => {
-                          return (
-                            <div key={details?.value}>
-                              {details?.type === "component" ? (
-                                <div className="info gap-3">
-                                  <span role="img" aria-label="region">
-                                    ℹ️
-                                  </span>
-                                  <Link
-                                    href={details.value}
-                                    title={details?.title}
-                                  />
-                                </div>
-                              ) : (
-                                <div className="info gap-3">
-                                  <span role="img" aria-label="Coordinates">
-                                    {details?.icon}
-                                  </span>
-                                  <p className={`${details?.className || ""}`}>
-                                    {details?.value}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
+                    ) : (
+                      <p className={detail.className || ""}>{detail.value}</p>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            );
-          })}
-        </div>
-
-        <div className="search-container">
-          <input
-            type="text"
-            value={countryName}
-            onChange={(e) => setCountryName(e.target.value)}
-            placeholder="Enter country name"
-          />
-          <button onClick={handleSearch}>Get Details</button>
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </>
+
+      <div className="search-container">
+        <input
+          type="text"
+          value={countryName}
+          onChange={(e) => setCountryName(e.target.value)}
+          placeholder="Enter country name"
+        />
+        <button onClick={() => fetchCountryData(countryName)}>
+          Get Details
+        </button>
+      </div>
+    </div>
   );
 }
 
