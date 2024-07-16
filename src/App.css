@@ -1,0 +1,63 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('path_to_background_image');
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+}
+
+.flag img, .coat-of-arms img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+h1 {
+  margin-top: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.details, .location, .time, .info {
+  margin-top: 10px;
+}
+
+.details p, .location p, .time p, .info p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
