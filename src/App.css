@@ -1,6 +1,6 @@
 body {
   font-family: "Arial", sans-serif;
-  background-image: url("path_to_background_image");
+  background-image: url("path_to_background_image"); /* add background image */
   background-size: cover;
   background-position: center;
   margin: 0;
@@ -175,7 +175,6 @@ a:hover {
   gap: 20px;
   justify-content: flex-start;
   align-items: center;
-  /* height: 20vh; */
 }
 
 input {

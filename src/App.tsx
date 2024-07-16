@@ -22,7 +22,6 @@ function App() {
     } catch (error) {
       setIsLoading(false);
       setIsError(true);
-      console.error("Error fetching data:", error);
     }
   };
 
