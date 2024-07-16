@@ -25,7 +25,7 @@ body {
 }
 
 .card {
-  background: rgb(254, 254, 254);
+  background: rgb(240, 240, 240);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -64,6 +64,10 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.image-fit {
+  width: 78%;
 }
 
 .details {
@@ -106,7 +110,7 @@ p {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-inline: 15px;
+  margin-inline: 15px;
 }
 
 a {
@@ -125,10 +129,11 @@ a:hover {
   text-underline-offset: 2px;
   text-decoration-thickness: 5px;
   text-decoration-color: rgb(111, 171, 236);
+  background-color: #c0c0c0;
 }
 
 .defination {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 8px 15px;
   border-radius: 6px;
 }
@@ -138,9 +143,26 @@ a:hover {
 }
 
 .search-container {
-  background: #4a0000;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-start;
   align-items: center;
   height: 20vh;
+}
+
+input {
+  padding: 15px 10px;
+  border-radius: 10px;
+  background-color: white;
+  opacity: 0.5;
+}
+
+button {
+  padding: 15px;
+  border-radius: 18px;
+  color: #000;
+  background-color: rgba(24, 246, 50, 0.815);
+  font-weight: 500;
+  border: none;
 }

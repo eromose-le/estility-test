@@ -160,7 +160,7 @@ function App() {
           </div>
 
           <div className="card">
-            <div className="image">
+            <div className="image image-fit">
               <img
                 src={country?.coatOfArms?.svg}
                 alt={`${country?.name?.common} "Coat of Arms"`}
