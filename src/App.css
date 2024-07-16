@@ -1,63 +1,146 @@
 body {
-  font-family: 'Arial', sans-serif;
-  background-image: url('path_to_background_image');
+  font-family: "Arial", sans-serif;
+  background-image: url("path_to_background_image");
   background-size: cover;
   background-position: center;
   margin: 0;
   padding: 0;
 }
 
-.container {
+.app-container {
+  background: #fff;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  gap: 20px;
+  height: 70vh;
+  gap: 40px;
 }
 
 .card {
-  background: white;
-  border-radius: 8px;
+  background: rgb(254, 254, 254);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: start;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
+  height: 550px;
+  width: 400px;
+  padding: 25px 15px;
   text-align: center;
 }
 
-.flag img, .coat-of-arms img {
+.divider {
+  background: #000000;
+  margin-top: 15px;
+  margin-inline: auto;
+  width: 50%;
+  height: 1px;
+}
+
+.content {
+  flex: 1;
+  margin-top: 10px;
+  padding-inline: 35px;
+}
+
+.image {
+  flex: 1;
   width: 100%;
-  height: auto;
-  border-radius: 8px;
+  max-width: 380px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin: auto;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 h1 {
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 24px;
   color: #333;
 }
 
 p {
   margin: 5px 0;
-  color: #666;
+  color: #000000;
 }
 
-.details, .location, .time, .info {
+.info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.center-info {
+  /* flex: 1; */
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.details {
   margin-top: 10px;
 }
 
-.details p, .location p, .time p, .info p {
+.details p {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-inline: 15px;
 }
 
 a {
   display: inline-block;
-  margin-top: 10px;
-  color: #007BFF;
-  text-decoration: none;
+  color: #321cb0;
+  text-decoration: underline;
+  padding-inline: 15px;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+.monday {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 5px;
+  text-decoration-color: rgb(111, 171, 236);
+}
+
+.defination {
+  background-color: #fff;
+  padding: 8px 15px;
+  border-radius: 6px;
+}
+
+.gap-3 {
+  gap: 15px;
+}
+
+.search-container {
+  background: #4a0000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
 }

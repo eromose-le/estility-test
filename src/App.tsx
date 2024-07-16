@@ -55,96 +55,181 @@ function formatLatLng(latlng: number[]): string {
 }
 
 function App() {
+  const [countryName, setCountryName] = useState<string>("Nigeria");
   const [country, setCountry] = useState<Country | null>(null);
 
-  useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
+  const fetchCountryData = (name: string) => {
+    fetch(`https://restcountries.com/v3.1/name/${name}`)
       .then((response) => response.json())
       .then((data: Country[]) => {
-        const nigeriaData = data.find(
-          (country) => country.name.common === "Nigeria"
-        );
-        setCountry(nigeriaData || null);
+        const countryData = data[0];
+        setCountry(countryData || null);
       })
       .catch((error) => console.error("Error fetching data:", error));
+  };
+
+  const handleSearch = () => {
+    fetchCountryData(countryName);
+  };
+
+  useEffect(() => {
+    fetchCountryData("Nigeria");
   }, []);
 
   if (!country) {
     return <div>Loading...</div>;
   }
 
-  console.log(country);
+  const countryDetails = [
+    {
+      name: country?.name?.official,
+      region: country?.region,
+      image: country?.flags?.svg,
+      alt: country?.name?.common,
+      details: [
+        {
+          icon: "👥",
+          value: `${formatPopulation(country?.population)} People `,
+        },
+        {
+          icon: "📢",
+          value: `${Object.values(country?.languages).join(", ") || "Nill"} `,
+        },
+        { icon: "💵", value: formatCurrencies(country?.currencies) },
+      ],
+    },
+    {
+      name: country?.name?.official,
+      region: country?.region,
+      image: country?.coatOfArms?.svg,
+      alt: country?.name?.common,
+      details: [
+        { icon: "📍", value: country?.capital },
+        { icon: "🕒", value: formatLatLng(country?.latlng) },
+        { icon: "ℹ️", value: country?.startOfWeek?.toUpperCase() },
+        { icon: "🕒", value: "No definitions available." },
+        { icon: "🕒", value: country?.region },
+        { icon: "🕒", value: country?.maps?.googleMaps },
+      ],
+    },
+  ];
 
   return (
     <>
-      <div className="container">
-        <div className="card">
-          <div className="flag">
-            <img
-              src={country?.flags?.svg}
-              alt={`${country?.name?.common} "Flag"`}
-            />
+      <div className="app-container">
+        <div className="card-container">
+          <div className="card">
+            <div className="image">
+              <img
+                src={country?.flags?.svg}
+                alt={`${country?.name?.common} "Flag"`}
+              />
+            </div>
+            <div className="content">
+              <div className="divider"></div>
+              <h1>{country?.name?.official}</h1>
+              <div className="details">
+                <p>{country?.region}</p>
+                <div className="info">
+                  <span role="img" aria-label="People">
+                    👥
+                  </span>
+                  <p className="center-info">
+                    {formatPopulation(country?.population)} People
+                  </p>
+                </div>
+                <div className="info">
+                  <span role="img" aria-label="Language">
+                    📢
+                  </span>
+                  <p className="center-info">
+                    {Object.values(country?.languages).join(", ") ||
+                      "more language"}
+                  </p>
+                </div>
+                <div className="info">
+                  <span role="img" aria-label="Currency">
+                    💵
+                  </span>
+                  <p className="center-info">
+                    {formatCurrencies(country?.currencies)}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <h1>{country?.name?.official}</h1>
-          <p>Africa</p>
-          <div className="details">
-            <p>
-              <span role="img" aria-label="People">
-                👥
-              </span>{" "}
-              {formatPopulation(country?.population)} People
-            </p>
-            <p>
-              <span role="img" aria-label="Language">
-                📢
-              </span>{" "}
-              {country?.languages?.eng || "more language"}
-            </p>
-            <p>
-              <span role="img" aria-label="Currency">
-                💵
-              </span>{" "}
-              {formatCurrencies(country?.currencies)}
-            </p>
+
+          <div className="card">
+            <div className="image">
+              <img
+                src={country?.coatOfArms?.svg}
+                alt={`${country?.name?.common} "Coat of Arms"`}
+              />
+            </div>
+            <div className="content">
+              <div className="details">
+                <div className="info gap-3">
+                  <span role="img" aria-label="Coordinates">
+                    📍
+                  </span>
+                  <p>{country?.capital}</p>
+                </div>
+
+                <div className="info gap-3">
+                  <span role="img" aria-label="Coordinates">
+                    📍
+                  </span>
+                  <p>{formatLatLng(country?.latlng)}</p>
+                </div>
+
+                <div className="info gap-3">
+                  <span role="img" aria-label="Day">
+                    🕒
+                  </span>
+                  <p className="monday">
+                    {country?.startOfWeek?.toUpperCase()}
+                  </p>
+                </div>
+
+                <div className="info gap-3">
+                  <span role="img" aria-label="Info">
+                    ℹ️
+                  </span>
+                  <p className="defination">📍 No definitions available.</p>
+                </div>
+
+                <div className="info gap-3">
+                  <span role="img" aria-label="region">
+                    ℹ️
+                  </span>
+                  <p>{country?.region}</p>
+                </div>
+
+                <div className="info gap-3">
+                  <span role="img" aria-label="region">
+                    ℹ️
+                  </span>
+                  <a
+                    href={country?.maps?.googleMaps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Map Link
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="card">
-          <div className="coat-of-arms">
-            <img src={country.coatOfArms.svg} alt="Nigeria Coat of Arms" />
-          </div>
-          <h1>{country?.capital}</h1>
-          <div className="location">
-            <p>
-              <span role="img" aria-label="Coordinates">
-                📍
-              </span>{" "}
-              {formatLatLng(country?.latlng)}
-            </p>
-          </div>
-          <div className="time">
-            <p>
-              <span role="img" aria-label="Day">
-                🕒
-              </span>{" "}
-              {country?.startOfWeek?.toUpperCase()}
-            </p>
-          </div>
-          <div className="info">
-            <p>
-              <span role="img" aria-label="Info">
-                ℹ️
-              </span>{" "}
-              No definitions available.
-            </p>
-          </div>
-          <p>{country?.region}</p>
-          <a
-            href={country?.maps?.googleMaps}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Map Link
-          </a>
+
+        <div className="search-container">
+          <input
+            type="text"
+            value={countryName}
+            onChange={(e) => setCountryName(e.target.value)}
+            placeholder="Enter country name"
+          />
+          <button onClick={handleSearch}>Get Details</button>
         </div>
       </div>
     </>
