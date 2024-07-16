@@ -51,6 +51,7 @@ body {
 .content {
   flex: 1;
   margin-top: 10px;
+  min-width: 300px;
   max-width: 330px;
   padding-inline: 35px;
 }
@@ -209,9 +210,26 @@ button:hover {
   color: rgb(234, 43, 43);
 }
 
-@media (max-width: 700px) {
+@media (max-width: 869px) {
   .card-container {
     flex-direction: column;
     gap: 20px;
+    padding: 40px;
+  }
+
+  .content {
+    min-width: 300px;
+    padding-inline: 10px;
+  }
+}
+@media (max-width: 400px) {
+  .card-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .content {
+    min-width: 100%;
   }
 }
