@@ -25,7 +25,7 @@ body {
   align-items: center;
   height: 100%;
   padding: 50px;
-  gap: 20px;
+  gap: 40px;
 }
 
 .card {
@@ -36,7 +36,7 @@ body {
   align-items: start;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 550px;
-  width: 400px;
+  max-width: 400px;
   padding: 25px 15px;
   text-align: center;
 }
@@ -166,7 +166,12 @@ a:hover {
 .px-4 {
   background: #eee;
   display: flex;
+  text-align: left;
   padding-left: 15px;
+}
+
+.map {
+  padding-left: 30px;
 }
 
 .search-container {
@@ -175,6 +180,7 @@ a:hover {
   gap: 20px;
   justify-content: flex-start;
   align-items: center;
+  padding-bottom: 20px;
 }
 
 input {

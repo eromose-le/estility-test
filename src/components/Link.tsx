@@ -3,11 +3,17 @@ import React from "react";
 interface LinkProps {
   href: string;
   title: string;
+  className?: string;
 }
 
-const Link: React.FC<LinkProps> = ({ href, title }) => {
+const Link: React.FC<LinkProps> = ({ href, title, className }) => {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a
+      className={className || ""}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {title}
     </a>
   );

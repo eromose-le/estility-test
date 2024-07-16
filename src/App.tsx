@@ -87,7 +87,7 @@ function App() {
         {
           icon: "🕒",
           value: country?.maps?.googleMaps || "N/A",
-          className: "px-4",
+          className: "px-4 map",
           title: "Map Link",
           type: "component",
         },
@@ -132,6 +132,7 @@ function App() {
                       <Link
                         href={detail.value as string}
                         title={detail.title}
+                        className={detail.className}
                       />
                     ) : (
                       <p className={detail.className || ""}>{detail.value}</p>
