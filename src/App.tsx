@@ -1,55 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import Link from "./components/Link";
-
-interface Country {
-  name: { common: string; official: string };
-  region: string;
-  population: number;
-  languages: { [key: string]: string };
-  currencies: { [key: string]: { name: string; symbol: string } };
-  capital: string[];
-  latlng: number[];
-  flags: { svg: string };
-  coatOfArms: { svg: string };
-  startOfWeek: string;
-  maps: {
-    googleMaps: string;
-  };
-}
-
-type Currency = {
-  name: string;
-  symbol: string;
-};
-
-type Currencies = {
-  [key: string]: Currency;
-};
-
-function formatPopulation(number: number): string {
-  if (number >= 1_000_000) {
-    return (number / 1_000_000).toFixed(2) + "m";
-  } else if (number >= 1_000) {
-    return (number / 1_000).toFixed(2) + "k";
-  } else {
-    return number.toString() || "";
-  }
-}
-
-function formatCurrencies(currencies: Currencies): string[] {
-  return Object.keys(currencies).map(
-    (key) => `${key}, ${currencies[key].symbol}`
-  );
-}
-
-function formatLatLng(latlng: number[]): string {
-  const [latitude, longitude] = latlng;
-  return (
-    `${latitude.toFixed(2)} latitude, ${longitude.toFixed(2)} longitude` ||
-    "N/A"
-  );
-}
+import { Country } from "./types/country";
+import { formatCurrencies, formatLatLng, formatPopulation } from "./utils/helper";
 
 const BASE_URL = "https://restcountries.com/v3.1/name/";
 
@@ -168,7 +121,7 @@ function App() {
               ) : null}
 
               <div className="details">
-                {country.details.map((detail: any, detailIndex) => (
+                {country?.details.map((detail: any, detailIndex) => (
                   <div
                     key={detailIndex}
                     className={`${detail?.infoClassName} info`}
