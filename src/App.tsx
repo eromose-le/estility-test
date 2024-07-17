@@ -2,9 +2,25 @@ import { FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import Link from "./components/Link";
 import { Country } from "./types/country";
-import { formatCurrencies, formatLatLng, formatPopulation } from "./utils/helper";
+import {
+  formatCurrencies,
+  formatLatLng,
+  formatPopulation,
+} from "./utils/helper";
 
 const BASE_URL = "https://restcountries.com/v3.1/name/";
+
+const COUNTRY_SUGGESTIONS = [
+  "Nigeria",
+  "Canada",
+  "Australia",
+  "Germany",
+  "Brazil",
+  "Japan",
+  "South Africa",
+  "United States",
+  "United Kingdom",
+];
 
 function App() {
   const [countryName, setCountryName] = useState<string>("Nigeria");
@@ -148,11 +164,17 @@ function App() {
       <>
         <form className="search-container" onSubmit={handleSubmit}>
           <input
+            list="country-suggestions"
             type="text"
             value={countryName}
             onChange={(e) => setCountryName(e.target.value)}
             placeholder="Enter country name"
           />
+          <datalist id="country-suggestions">
+            {COUNTRY_SUGGESTIONS.map((country) => (
+              <option key={country} value={country} />
+            ))}
+          </datalist>
           <button type="submit">
             {isLoading ? "fetching.." : "Get Details"}
           </button>
